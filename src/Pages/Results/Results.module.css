@@ -1,0 +1,13 @@
+.products_container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+@media (max-width: 600px) {
+  .products_container {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+
+}

@@ -1,0 +1,72 @@
+import React, { useContext } from "react";
+import Rating from "@mui/material/Rating";
+import CurrencyFormat from "./CurrencyFormat";
+import classes from "./Product.module.css";
+import { Link } from "react-router-dom";
+import { DataContext } from "../DataProvider/DataProvider";
+import { Type } from "../../Utility/ActionType";
+function ProductCard({ product = {}, renderAdd, isOrder }) {
+  const { image, title, id, rating, price, quantity = 1 } = product;
+  const [, dispatch] = useContext(DataContext);
+  const addToCart = () => {
+    dispatch({
+      type: Type.ADD_TO_BASKET,
+      item: { id, title, image, price, rating },
+    });
+  };
+  
+  const decreaseQty = () => {
+    dispatch({
+      type: Type.DECREASE_QUANTITY,
+      id,
+    });
+  };
+
+  return (
+    
+      <div className={classes.card__container}>
+      {isOrder ? (
+        <img src={image} alt={title} />
+      ) : (
+        <Link to={`/product/${id}`}>
+          <img src={image} alt={title} />
+        </Link>
+      )}
+
+      <div className={classes.rating}>
+        <h3>{title}</h3>
+
+        <div className={classes.ratingStars}>
+          <Rating value={rating?.rate || 0} precision={0.1} readOnly />
+          <small>{rating?.count || 0} reviews</small>
+        </div>
+
+        <div>
+          <CurrencyFormat amount={price * quantity} />
+        </div>
+
+        {/* PRODUCT PAGE / LIST PAGE */}
+        {renderAdd && (
+          <button className={classes.button} onClick={addToCart}>
+            Add to Cart
+          </button>
+        )}
+
+        {/* CART PAGE */}
+       
+      </div>
+       {!renderAdd && !isOrder && (
+          <div className={classes.quantity_controls}>
+            <button onClick={decreaseQty}>−</button>
+            <span>{quantity}</span>
+            <button onClick={addToCart}>+</button>
+          </div>
+        )}
+      </div>
+      
+    
+    
+  );
+}
+
+export default ProductCard;
