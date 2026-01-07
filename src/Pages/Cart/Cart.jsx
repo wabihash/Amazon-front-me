@@ -11,7 +11,6 @@ function Cart() {
   (amount, item) => item.price * item.quantity + amount,
   0
 );
-
     console.log(user)
      return (
         <Layout>

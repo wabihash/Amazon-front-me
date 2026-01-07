@@ -169,12 +169,13 @@
   align-items: center;
 }
 
-.order_container a:hover,
-.delivery:hover,
-.logo_container a:hover,
-.lower_container ul li:hover {
-  border: 1px solid white;
-  border-radius: 3px;
+.lower__container ul li a {
+  text-decoration: none;
+  color: white;
+}
+
+.lower__container ul li a:hover {
+  text-decoration: underline;
 }
 
 /* Mobile first: default styles already set above */

@@ -30,6 +30,7 @@ function Routing() {
                     </ProtectedRoute>
                 } />
                 <Route path="/category/:categoryName" element={<Results />} />
+                <Route path="/search/:searchQuery" element={<Results />} />
                 <Route path="/product/:productId" element={<ProductDetail />} />
 
                 <Route path="/cart" element={<Cart />} />
