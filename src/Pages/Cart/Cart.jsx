@@ -13,7 +13,7 @@ function Cart() {
 );
     console.log(user)
      return (
-        <Layout>
+        <LayOut>
             <section className={classes.container}>
                 <div className={classes.cart__container}>
                     <h2>Hello {user?.email}</h2>
@@ -53,7 +53,7 @@ function Cart() {
                     )
                 }
             </section>
-        </Layout>
+        </LayOut>
     );
 }
 
