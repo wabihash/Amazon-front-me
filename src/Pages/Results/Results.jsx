@@ -6,7 +6,6 @@ import axios from 'axios'
 import { productUrl } from '../../API/Endpoint'
 import ProductCard from '../../Components/Product/ProductCard'
 import Loader from '../../Components/Loader/Loader'
-
 function Results() {
     const [results, setResults] = useState([])
     const [loading, setLoading] = useState(true)
@@ -14,7 +13,6 @@ function Results() {
     const { categoryName, searchQuery } = useParams()
     const [searchParams] = useSearchParams()
     const searchTerm = searchParams.get('search')
-
     // Fetch all products for search functionality
     useEffect(() => {
         axios.get(`${productUrl}/products`) 

@@ -89,6 +89,8 @@
   background-color: #f7ca00;
 }
 
+
+
 .loading {
   display: flex;
   justify-content: center;
@@ -98,6 +100,13 @@
   color: #666;
 }
 
+@media (max-width: 768px) {
+.product_image img{
+     height: 300px !important;
+    width: 300px !important;
+  }
+
+}
 /* Responsive design */
 @media (min-width: 768px) {
   .product_detail_container {
@@ -110,7 +119,7 @@
     flex: 1;
     max-width: 400px;
   }
-
+   
   .product_info {
     flex: 1;
     text-align: left;
@@ -139,5 +148,12 @@
   .button {
     padding: 10px 30px;
     font-size: 0.9rem;
+  }
+  .product_image img{
+     height: 150px !important;
+    width: 150px !important;
+  }
+  .product_info h1 {
+    font-size: 1rem;
   }
 }

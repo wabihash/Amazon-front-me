@@ -134,14 +134,11 @@
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   }
 
-  .card__container img {
-    height: 140px;
-  }
-
   .button {
     padding: 6px 15px;
   }
    .button {
     display: block;
   }
+
 }
