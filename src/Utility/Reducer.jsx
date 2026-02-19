@@ -2,7 +2,9 @@ import { Type } from './ActionType';
 
 export const initialState = {
   basket: [],
-  user: null
+  user: null,
+  wishlist: [],
+  theme: 'light'
 };
 
 export const reducer = (state, action) => {
@@ -52,6 +54,27 @@ export const reducer = (state, action) => {
         ...state,
         basket: []
       }
+    
+    case Type.ADD_TO_WISHLIST: {
+      const exists = state.wishlist.find(item => item.id === action.item.id);
+      if (exists) return state;
+      return {
+        ...state,
+        wishlist: [...state.wishlist, action.item]
+      };
+    }
+
+    case Type.REMOVE_FROM_WISHLIST:
+      return {
+        ...state,
+        wishlist: state.wishlist.filter(item => item.id === action.id)
+      };
+    
+    case Type.TOGGLE_THEME:
+      return {
+        ...state,
+        theme: state.theme === 'light' ? 'dark' : 'light'
+      };
     
     default:
       return state;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import classes from './Results.module.css'
-import Layout from '../../Components/LayOut/LayOut'
+import LayOut from '../../Components/LayOut/LayOut'
 import { useParams, useSearchParams } from 'react-router-dom'
 import axios from 'axios'
 import { productUrl } from '../../API/Endpoint'
@@ -67,9 +67,9 @@ function Results() {
 
     if (loading) {
         return (
-            <Layout>
+            <LayOut>
                 <Loader />
-            </Layout>
+            </LayOut>
         )
     }
 
@@ -88,7 +88,7 @@ function Results() {
     }
 
     return (
-        <Layout>
+        <LayOut>
             <section className={classes.results_section}>
                 <h1 className={classes.results_title}>{getTitle()}</h1>
                 <p className={classes.results_category}>{getSubtitle()}</p>
@@ -107,7 +107,7 @@ function Results() {
                     )}
                 </div>
             </section>
-        </Layout>
+        </LayOut>
     )
 }
 

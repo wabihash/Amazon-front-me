@@ -16,7 +16,7 @@ function Cart() {
         <LayOut>
             <section className={classes.container}>
                 <div className={classes.cart__container}>
-                    <h2>Hello {user?.email}</h2>
+                    <h2>Hello {user?.firstName || user?.email?.split("@")[0]}</h2>
                     <h3>Your shopping basket</h3>
                     <hr />
                     {

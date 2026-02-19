@@ -2,32 +2,38 @@ import React, { useEffect,useContext} from 'react';
 import './App.css';
 import Routing from './Routing';
 import { DataContext } from './Components/DataProvider/DataProvider';
-import { auth } from './Utility/Firebase';
+import { auth, db } from './Utility/Firebase';
 import { Type } from './Utility/ActionType';
+
 function App() {
- const [{user},dispatch] = useContext(DataContext);
+ const [{user, theme},dispatch] = useContext(DataContext);
   useEffect(() => {
-        auth.onAuthStateChanged((authUser) => {
+        auth.onAuthStateChanged(async (authUser) => {
           if (authUser) {
+            // Fetch user role and firstName from Firestore using compat syntax
+            const userDoc = await db.collection("users").doc(authUser.uid).get();
+            const userData = userDoc.exists ? userDoc.data() : {};
+            const role = userData.role || "user";
+            const firstName = userData.firstName || "";
+            
             dispatch({
               type: Type.SET_USER,
-              user: authUser
+              user: { ...authUser, role, firstName }
             })
           }
           else {
             dispatch({
               type: Type.SET_USER,
-              user: authUser
+              user: null
             })
           }
         })
   }, []);
   
   return (
-    <>
-    
+    <div className={theme}>
       <Routing />
-    </>
+    </div>
   )
 }
 

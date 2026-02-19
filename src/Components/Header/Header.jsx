@@ -7,8 +7,10 @@ import classes from './Header.module.css';
 import LowerHeader from './LowerHeader';
 import { DataContext } from '../DataProvider/DataProvider';
 import {auth} from '../../Utility/Firebase'
+import ThemeToggle from '../Theme/ThemeToggle';
+
 function Header() {
-  const [{ basket,user }] = useContext(DataContext);
+  const [{ basket, user, wishlist }] = useContext(DataContext);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const navigate = useNavigate();
@@ -43,6 +45,7 @@ function Header() {
           <Link to="/">
             <img src="/amazon_PNG11.png" alt="Amazon Logo" />
           </Link>
+          <ThemeToggle />
 
           <div className={classes.delivery}>
             <span>
@@ -96,7 +99,7 @@ function Header() {
               {
                 user ? ( 
                   <>
-                    <p>Hello,{user?.email?.split("@")[0]}</p>
+                    <p>Hello, {user?.firstName || user?.email?.split("@")[0]}</p>
                     <span onClick={()=>auth.signOut()}>Sign Out</span>
                   </>
                 
@@ -116,6 +119,20 @@ function Header() {
             <p>Returns</p>
             <span>& Orders</span>
           </Link>
+
+          {/* WISHLIST */}
+          <Link to="/wishlist" className={classes.account}>
+            <p>Your</p>
+            <span>Wishlist ({wishlist?.length || 0})</span>
+          </Link>
+
+          {/* ADMIN */}
+          {user?.role === 'admin' && (
+            <Link to="/admin" className={classes.account}>
+              <p>Admin</p>
+              <span>Panel</span>
+            </Link>
+          )}
 
           {/* CART */}
           <Link to="/cart" className={classes.cart}>

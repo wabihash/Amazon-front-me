@@ -5,9 +5,23 @@ import classes from "./Product.module.css";
 import { Link } from "react-router-dom";
 import { DataContext } from "../DataProvider/DataProvider";
 import { Type } from "../../Utility/ActionType";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+
 function ProductCard({ product = {}, renderAdd, isOrder }) {
   const { image, title, id, rating, price, quantity = 1 } = product;
-  const [, dispatch] = useContext(DataContext);
+  const [{ wishlist }, dispatch] = useContext(DataContext);
+  
+  const isWishlisted = wishlist?.some(item => item.id === id);
+
+  const toggleWishlist = (e) => {
+    e.preventDefault();
+    if (isWishlisted) {
+      dispatch({ type: Type.REMOVE_FROM_WISHLIST, id });
+    } else {
+      dispatch({ type: Type.ADD_TO_WISHLIST, item: { id, title, image, price, rating } });
+    }
+  };
+
   const addToCart = () => {
     dispatch({
       type: Type.ADD_TO_BASKET,
@@ -32,6 +46,10 @@ function ProductCard({ product = {}, renderAdd, isOrder }) {
           <img src={image} alt={title} />
         </Link>
       )}
+
+      <div className={classes.wishlist__icon} onClick={toggleWishlist}>
+        {isWishlisted ? <FaHeart color="#ff9900" /> : <FaRegHeart />}
+      </div>
 
       <div className={classes.rating}>
         <h3>{title}</h3>

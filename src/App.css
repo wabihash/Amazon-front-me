@@ -10,7 +10,41 @@ html,body{
      /* overflow-x: hidden;
     overflow-y: auto;  */
 }
-:root{
-    --primary-color:#febd69;
-     --primary-shade:#d49644;
+:root {
+  --primary-color: #febd69;
+  --primary-shade: #d49644;
+  --bg-color: #f3f3f3;
+  --text-color: #0f1111;
+  --card-bg: #ffffff;
+  --border-color: #ddd;
+}
+
+.dark {
+  --bg-color: #1a1a1a;
+  --text-color: #ffffff;
+  --card-bg: #2b2b2b;
+  --border-color: #444;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark .admin__container,
+.dark .wishlist__container {
+    background-color: var(--bg-color);
+}
+
+.dark .admin__card,
+.dark .wishlist__empty,
+.dark .card__container {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.dark h1, .dark h2, .dark h3, .dark p, .dark span, .dark small {
+    color: var(--text-color) !important;
 }

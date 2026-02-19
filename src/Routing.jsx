@@ -10,6 +10,11 @@ import ProductDetail from "./Pages/productDetail/ProductDetail";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
+import AdminRoute from "./Components/AdminRoute/AdminRoute";
+import AdminDashboard from "./Pages/Admin/AdminDashboard";
+import Wishlist from "./Pages/Wishlist/Wishlist";
+
+
 function Routing() {
     const stripePromise = loadStripe("pk_test_51SjZSHHqUsHBM45rMWJNPOfwgTo7DnlEeOhNGsDlB7cioouB1jo6sqwJPcptPjpz2fUOXQf9d5Od1DDQsaD6QMbz00lsennkHX");
     return (
@@ -34,6 +39,18 @@ function Routing() {
                 <Route path="/product/:productId" element={<ProductDetail />} />
 
                 <Route path="/cart" element={<Cart />} />
+                <Route path="/admin" element={
+                    <AdminRoute>
+                        <AdminDashboard />
+                    </AdminRoute>
+                } />
+                <Route path="/wishlist" element={
+                    <ProtectedRoute msg="You need to login to view your wishlist" redirect="/wishlist">
+                        <Wishlist />
+                    </ProtectedRoute>
+                } />
+
+
             </Routes>
         </Router>
     );
