@@ -47,9 +47,11 @@ function ProductCard({ product = {}, renderAdd, isOrder }) {
         </Link>
       )}
 
-      <div className={classes.wishlist__icon} onClick={toggleWishlist}>
-        {isWishlisted ? <FaHeart color="#ff9900" /> : <FaRegHeart />}
-      </div>
+      {!isOrder && (
+        <div className={classes.wishlist__icon} onClick={toggleWishlist}>
+          {isWishlisted ? <FaHeart color="#ff9900" /> : <FaRegHeart />}
+        </div>
+      )}
 
       <div className={classes.rating}>
         <h3>{title}</h3>
@@ -67,6 +69,13 @@ function ProductCard({ product = {}, renderAdd, isOrder }) {
         {renderAdd && (
           <button className={classes.button} onClick={addToCart}>
             Add to Cart
+          </button>
+        )}
+
+        {/* ORDER PAGE - Buy Again */}
+        {isOrder && (
+          <button className={classes.button} style={{ display: 'block', marginTop: '10px' }} onClick={addToCart}>
+            Buy Again
           </button>
         )}
 
