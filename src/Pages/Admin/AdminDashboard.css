@@ -101,3 +101,34 @@
         padding: 15px;
     }
 }
+
+/* Dark mode overrides */
+:global(.dark) .admin__container {
+    background-color: var(--bg-color);
+}
+
+:global(.dark) .admin__container h1 {
+    color: var(--text-color);
+}
+
+:global(.dark) .stat__card {
+    background-color: var(--card-bg);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+:global(.dark) .stat__card h4 {
+    color: #aaa;
+}
+
+:global(.dark) .stat__card .stat__value {
+    color: var(--text-color);
+}
+
+:global(.dark) .admin__card {
+    background-color: var(--card-bg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+:global(.dark) .admin__card h3 {
+    color: var(--text-color);
+}

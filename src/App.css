@@ -32,19 +32,120 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.dark .admin__container,
-.dark .wishlist__container {
-    background-color: var(--bg-color);
+/* ===== DARK MODE OVERRIDES ===== */
+
+/* --- Global text --- */
+.dark h1, .dark h2, .dark h3, .dark h4,
+.dark p, .dark span, .dark small, .dark label,
+.dark li, .dark td, .dark th, .dark div {
+    color: var(--text-color);
 }
 
+/* --- Page backgrounds --- */
+.dark .admin__container,
+.dark .wishlist__container,
+.dark [class*="results_section"],
+.dark [class*="cart_container"],
+.dark [class*="payment"],
+.dark [class*="product_detail_container"],
+.dark [class*="products_container"],
+.dark [id="container"] {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* --- Cards & Containers --- */
 .dark .admin__card,
+.dark .stat__card,
 .dark .wishlist__empty,
-.dark .card__container {
+.dark [class*="card__container"],
+.dark [class*="card_container"],
+.dark [class*="orders__container"],
+.dark [class*="subtotal"],
+.dark [class*="Login_container"],
+.dark [class*="payment_header"],
+.dark [class*="payment_card_container"],
+.dark [class*="payment_price_container"],
+.dark [class*="payment_details"] {
     background-color: var(--card-bg);
     border-color: var(--border-color);
     color: var(--text-color);
 }
 
-.dark h1, .dark h2, .dark h3, .dark p, .dark span, .dark small {
+/* --- Category cards --- */
+.dark [class*="categories"] {
+    background-color: var(--bg-color);
+}
+.dark [class*="categories"] [class*="card"] {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+}
+
+/* --- Product text specifics --- */
+.dark [class*="product_title"],
+.dark [class*="product_description"] h3,
+.dark [class*="product_description"] p,
+.dark [class*="review_count"],
+.dark [class*="loading"],
+.dark [class*="ratingStars"] small,
+.dark [class*="no_results"],
+.dark [class*="results_title"],
+.dark [class*="results_category"],
+.dark [class*="wishlist__header"] p {
     color: var(--text-color) !important;
+}
+
+/* --- Product price stays visible --- */
+.dark [class*="product_price"] {
+    color: #ff9900 !important;
+}
+
+/* --- Quantity controls --- */
+.dark [class*="quantity_controls"] button {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+.dark [class*="quantity_controls"] span {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+/* --- Auth form inputs --- */
+.dark [class*="Login_container"] form input {
+    background-color: #333;
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+/* --- Product card image bg (keep white for product images) --- */
+.dark [class*="card__container"] img,
+.dark [class*="product_image"] img {
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+/* --- Wishlist icon dark bg --- */
+.dark [class*="wishlist__icon"] {
+    background: var(--card-bg);
+}
+
+/* --- Cart subtotal link --- */
+.dark [class*="subtotal"] a {
+    color: #0f1111;
+}
+
+/* --- Carousel gradient fix --- */
+.dark [class*="hero__img"]::before {
+    background-image: linear-gradient(
+        to bottom,
+        rgba(26, 26, 26, 0),
+        rgba(26, 26, 26, 1)
+    );
+}
+
+/* --- HR lines --- */
+.dark hr {
+    border-color: var(--border-color);
 }
