@@ -18,10 +18,7 @@ const Wishlist = () => {
 
                 {wishlist?.length === 0 ? (
                     <div className="wishlist__empty">
-                        <img 
-                            src="https://m.media-amazon.com/images/G/01/wishlist/empty-wishlist-icon._CB485935105_.png" 
-                            alt="Empty Wishlist" 
-                        />
+                        <div style={{ fontSize: '4rem', marginBottom: '16px' }}>🤍</div>
                         <h2>Your Wishlist is empty</h2>
                         <p>Save items you're waiting for. They'll appear here so you can find them easily.</p>
                         <Link to="/" className="wishlist__shopButton">

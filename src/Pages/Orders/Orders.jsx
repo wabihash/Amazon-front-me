@@ -4,6 +4,7 @@ import classes from "./Orders.module.css";
 import { db } from "../../Utility/Firebase.jsx";
 import { DataContext } from '../../Components/DataProvider/DataProvider';
 import ProductCard from "../../Components/Product/ProductCard.jsx";
+
 function Orders() {
     const [{ user }, dispatch] = useContext(DataContext);
     const [orders, setOrders] = useState([]);
@@ -15,7 +16,6 @@ function Orders() {
                 .collection("orders")
                 .orderBy("created", "desc")
                 .onSnapshot((snapshot) => {
-                    console.log("Snapshot received:", snapshot);
                     setOrders(
                         snapshot.docs.map((doc) => ({
                             id: doc.id,
@@ -27,31 +27,38 @@ function Orders() {
             setOrders([]);
         }
     }, [user]);
+
     return (
         <LayOut>
-            <section className={classes.container}>
+            <section className={classes.section}>
                 <div className={classes.orders__container}>
-            <h2>Your Orders</h2>
-            {orders?.length === 0 && (
-                <h3 style={{
-                  padding : "20px"
-                      
-                    }}>No orders found</h3>
-            )
-            }
-             <div>
-                   {orders?.map((eachOrder) => {
-                            return (
-                                <div key={eachOrder.id}>
-                                    <hr />
-                                    <p>Order ID: {eachOrder?.id}</p>
-                                    {eachOrder?.data?.basket?.map((order) => (
-                                        <ProductCard  product={order} key={order.id} isOrder={true} />
-                                    ))}
-                                </div>
-                            );
-                        })}
-                    </div>
+                    <h2>Your Orders</h2>
+
+                    {orders?.length === 0 && (
+                        <p className={classes.empty__msg}>No orders found. Start shopping!</p>
+                    )}
+
+                    {orders?.map((eachOrder) => (
+                        <div key={eachOrder.id} className={classes.order__card}>
+                            {/* Order header row */}
+                            <div className={classes.order__card__header}>
+                                <span className={classes.order__id}>
+                                    Order ID: {eachOrder?.id}
+                                </span>
+                            </div>
+
+                            {/* Order items */}
+                            <div className={classes.order__items}>
+                                {eachOrder?.data?.basket?.map((order) => (
+                                    <ProductCard
+                                        product={order}
+                                        key={order.id}
+                                        isOrder={true}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </section>
         </LayOut>
