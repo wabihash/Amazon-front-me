@@ -12,7 +12,6 @@ const ThemeToggle = () => {
             type: Type.TOGGLE_THEME
         });
     };
-
     return (
         <div className={`theme__toggle ${theme}`} onClick={toggleTheme}>
             <div className="toggle__ball">

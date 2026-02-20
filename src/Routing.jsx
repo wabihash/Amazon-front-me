@@ -13,6 +13,7 @@ import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import AdminRoute from "./Components/AdminRoute/AdminRoute";
 import AdminDashboard from "./Pages/Admin/AdminDashboard";
 import Wishlist from "./Pages/Wishlist/Wishlist";
+import ComingSoon from "./Pages/ComingSoon/ComingSoon";
 
 
 function Routing() {
@@ -51,6 +52,7 @@ function Routing() {
                 } />
 
 
+                <Route path="/coming-soon" element={<ComingSoon />} />
             </Routes>
         </Router>
     );
