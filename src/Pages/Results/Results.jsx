@@ -5,7 +5,8 @@ import { useParams, useSearchParams } from 'react-router-dom'
 import axios from 'axios'
 import { productUrl } from '../../API/Endpoint'
 import ProductCard from '../../Components/Product/ProductCard'
-import Loader from '../../Components/Loader/Loader'
+import SkeletonCard from '../../Components/Loader/Skeleton'
+
 function Results() {
     const [results, setResults] = useState([])
     const [loading, setLoading] = useState(true)
@@ -68,7 +69,16 @@ function Results() {
     if (loading) {
         return (
             <LayOut>
-                <Loader />
+                <section className={classes.results_section}>
+                    <h1 className={classes.results_title} style={{ width: '300px', height: '35px', backgroundColor: '#eee', borderRadius: '4px' }}></h1>
+                    <p className={classes.results_category} style={{ width: '150px', height: '20px', backgroundColor: '#eee', borderRadius: '4px', marginTop: '10px' }}></p>
+                    <hr />
+                    <div className={classes.products_container}>
+                        {[...Array(8)].map((_, i) => (
+                            <SkeletonCard key={i} />
+                        ))}
+                    </div>
+                </section>
             </LayOut>
         )
     }

@@ -10,8 +10,9 @@ function Orders() {
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
+        let unsubscribe;
         if (user) {
-            db.collection("users")
+            unsubscribe = db.collection("users")
                 .doc(user.uid)
                 .collection("orders")
                 .orderBy("created", "desc")
@@ -22,9 +23,15 @@ function Orders() {
                             data: doc.data(),
                         }))
                     );
+                }, (error) => {
+                    console.error("Orders Snapshot Error:", error);
                 });
         } else {
             setOrders([]);
+        }
+
+        return () => {
+            if (unsubscribe) unsubscribe();
         }
     }, [user]);
 

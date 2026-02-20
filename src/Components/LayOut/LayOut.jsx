@@ -1,10 +1,15 @@
 import React from 'react'
 import Header from '../Header/Header'
+import Footer from '../Footer/Footer'
+
 function LayOut({children}){
     return (
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Header />
-            {children}
+            <div style={{ flex: 1 }}>
+                {children}
+            </div>
+            <Footer />
       </div>
     )
 }

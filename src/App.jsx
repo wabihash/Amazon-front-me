@@ -4,35 +4,99 @@ import Routing from './Routing';
 import { DataContext } from './Components/DataProvider/DataProvider';
 import { auth, db } from './Utility/Firebase';
 import { Type } from './Utility/ActionType';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
  const [{user, theme},dispatch] = useContext(DataContext);
   useEffect(() => {
-        auth.onAuthStateChanged(async (authUser) => {
-          if (authUser) {
-            // Fetch user role and firstName from Firestore using compat syntax
-            const userDoc = await db.collection("users").doc(authUser.uid).get();
-            const userData = userDoc.exists ? userDoc.data() : {};
-            const role = userData.role || "user";
-            const firstName = userData.firstName || "";
-            
-            dispatch({
-              type: Type.SET_USER,
-              user: { ...authUser, role, firstName }
-            })
+    dispatch({
+      type: Type.SET_AUTH_LOADING,
+      status: true
+    })
+    auth.onAuthStateChanged(async (authUser) => {
+      // Set authLoading to true whenever the auth state changes (login, logout, refresh)
+      dispatch({
+        type: Type.SET_AUTH_LOADING,
+        status: true
+      });
+
+      if (authUser) {
+        // 1. Dispatch essential user info immediately to prevent ProtectedRoute from bouncing
+        dispatch({
+          type: Type.SET_USER,
+          user: {
+            uid: authUser.uid,
+            email: authUser.email,
+            firstName: authUser.email?.split("@")[0] || "User"
           }
-          else {
-            dispatch({
-              type: Type.SET_USER,
-              user: null
-            })
+        });
+
+        try {
+          const userDoc = await db.collection("users").doc(authUser.uid).get();
+          
+          let userToSet;
+          if (userDoc.exists) {
+            const userData = userDoc.data();
+            userToSet = { 
+              uid: authUser.uid,
+              email: authUser.email,
+              role: userData.role || "user", 
+              firstName: userData.firstName || authUser.email?.split("@")[0] || "User"
+            };
+          } else {
+            userToSet = { 
+              uid: authUser.uid,
+              email: authUser.email,
+              role: "user", 
+              firstName: authUser.email?.split("@")[0] || "User"
+            };
           }
-        })
+
+          // 2. Enhance the user object with profile data (role, full name, etc.)
+          dispatch({
+            type: Type.SET_USER,
+            user: userToSet
+          });
+        } catch (error) {
+          console.error("Error fetching Firestore profile:", error);
+          // Fallback is already handled by the immediate dispatch above
+        }
+      } else {
+        dispatch({
+          type: Type.SET_USER,
+          user: null
+        });
+      }
+
+      dispatch({
+        type: Type.SET_AUTH_LOADING,
+        status: false
+      });
+    }, (error) => {
+      console.error("onAuthStateChanged ERROR:", error);
+      dispatch({
+        type: Type.SET_AUTH_LOADING,
+        status: false
+      });
+    });
   }, []);
   
   return (
     <div className={theme}>
       <Routing />
+      <ToastContainer 
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={theme === 'dark' ? 'dark' : 'light'}
+      />
     </div>
   )
 }

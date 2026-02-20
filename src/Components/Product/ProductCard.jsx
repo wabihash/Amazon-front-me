@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { DataContext } from "../DataProvider/DataProvider";
 import { Type } from "../../Utility/ActionType";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 function ProductCard({ product = {}, renderAdd, isOrder }) {
   const { image, title, id, rating, price, quantity = 1 } = product;
@@ -17,8 +18,10 @@ function ProductCard({ product = {}, renderAdd, isOrder }) {
     e.preventDefault();
     if (isWishlisted) {
       dispatch({ type: Type.REMOVE_FROM_WISHLIST, id });
+      toast.info("Removed from wishlist");
     } else {
       dispatch({ type: Type.ADD_TO_WISHLIST, item: { id, title, image, price, rating } });
+      toast.success("Added to wishlist!");
     }
   };
 
@@ -27,6 +30,7 @@ function ProductCard({ product = {}, renderAdd, isOrder }) {
       type: Type.ADD_TO_BASKET,
       item: { id, title, image, price, rating },
     });
+    toast.success("Added to cart!");
   };
   
   const decreaseQty = () => {
@@ -34,6 +38,10 @@ function ProductCard({ product = {}, renderAdd, isOrder }) {
       type: Type.DECREASE_QUANTITY,
       id,
     });
+    // Only toast if it's the last item being removed
+    if (quantity === 1) {
+      toast.info("Removed from cart");
+    }
   };
 
   return (

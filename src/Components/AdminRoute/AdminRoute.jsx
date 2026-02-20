@@ -4,16 +4,22 @@ import { DataContext } from '../../Components/DataProvider/DataProvider';
 
 const AdminRoute = ({ children }) => {
     const navigate = useNavigate();
-    const [{ user }] = useContext(DataContext);
+    const [{ user, authLoading }] = useContext(DataContext);
 
     useEffect(() => {
-        // If user is not logged in, or if they are logged in but NOT an admin
-        if (!user) {
-            navigate("/auth", { state: { msg: "You must be logged in to access the admin panel", redirect: "/admin" } });
-        } else if (user.role !== "admin") {
-            navigate("/", { state: { msg: "Access Denied: You do not have administrator privileges" } });
+        // Wait for auth to finish loading before checking permissions
+        if (!authLoading) {
+            if (!user) {
+                navigate("/auth", { state: { msg: "You must be logged in to access the admin panel", redirect: "/admin" } });
+            } else if (user.role !== "admin") {
+                navigate("/", { state: { msg: "Access Denied: You do not have administrator privileges" } });
+            }
         }
-    }, [user, navigate]);
+    }, [user, authLoading, navigate]);
+
+    if (authLoading) {
+        return null; // Or a loader component
+    }
 
     // Only render children if user is logged in and is an admin
     return user && user.role === "admin" ? children : null;

@@ -10,7 +10,7 @@ import {auth} from '../../Utility/Firebase'
 import ThemeToggle from '../Theme/ThemeToggle';
 
 function Header() {
-  const [{ basket, user, wishlist }] = useContext(DataContext);
+  const [{ basket, user, wishlist, authLoading }] = useContext(DataContext);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const navigate = useNavigate();
@@ -105,7 +105,7 @@ function Header() {
                 
                 ) : (
                     <>
-                    <p>Hello,Sign In</p>
+                    <p>Hello, {authLoading ? "..." : "Sign In"}</p>
                     <span>Account & Lists</span>
                     </>
                     

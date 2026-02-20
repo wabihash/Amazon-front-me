@@ -11,7 +11,13 @@ const firebaseConfig = {
   messagingSenderId: "990588604944",
   appId: "1:990588604944:web:95a752ff540854f9953095"
 };
+
 // Initialize firebase
 const app = firebase.initializeApp(firebaseConfig);
-export const auth = app.auth();
-export const db = app.firestore();
+const auth = app.auth();
+const db = app.firestore();
+
+// Explicitly set persistence to LOCAL to ensure session survives refreshes
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
+export { auth, db };

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ProductCard from "./ProductCard";
 import classes from "./Product.module.css";
-import Loader from "../Loader/Loader"; 
+import SkeletonCard from "../Loader/Skeleton"; 
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -24,9 +24,11 @@ const Product = () => {
 
   if (loading) {
     return (
-    
-        <Loader />
-      
+      <section className={classes.products_container}>
+        {[...Array(8)].map((_, i) => (
+          <SkeletonCard key={i} />
+        ))}
+      </section>
     );
   }
 

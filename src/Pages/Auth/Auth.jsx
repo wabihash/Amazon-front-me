@@ -4,8 +4,9 @@ import { Link,useNavigate,useLocation} from 'react-router-dom';
 import { auth, db } from '../../Utility/Firebase';
 import { DataContext } from "../../Components/DataProvider/DataProvider";
 import { Type } from "../../Utility/ActionType";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+// Removed modular imports to use compat API consistently
 import { ClipLoader } from "react-spinners";
+import { toast } from 'react-toastify';
 
 function Auth() {
   const [email, setEmail] = useState('');
@@ -19,66 +20,66 @@ function Auth() {
   const [{ user }, dispatch] = useContext(DataContext);
   const navigate = useNavigate()
   const navStateData = useLocation();
-  const authHandler = async(e) => {
-    e.preventDefault();
+  const authHandler = async (e, actionType) => {
+    if (e && e.preventDefault) e.preventDefault();
     
-    // Determine which button was clicked
-    const buttonName = e.nativeEvent.submitter?.name || e.target.name || 'signin';
-    
-    if (buttonName === 'signin') {
-      setLoading({...loading, signin: true});
-      
-      signInWithEmailAndPassword(auth, email, password)
-        .then(async (userInfo) => {
-          // Fetch user role and name from Firestore on signin
-          const userDoc = await db.collection("users").doc(userInfo.user.uid).get();
-          const userData = userDoc.exists ? userDoc.data() : {};
-          const role = userData.role || "user";
-          const firstName = userData.firstName || "";
+    // If no actionType is passed (e.g. hitting ENTER on form), default to 'signin'
+    const action = actionType || 'signin';
 
-          dispatch({
-            type: Type.SET_USER,
-            user: { ...userInfo.user, role, firstName }
-          });
-          setLoading({ ...loading, signin: false });
+    if (action === 'signin') {
+      if (loading.signin || loading.signup) return;
+      setLoading({ ...loading, signin: true });
+      setError('');
+      
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+        toast.success("Welcome back!");
+        // Small delay to allow Firebase global state (onAuthStateChanged) to settle
+        setTimeout(() => {
+          setLoading(prev => ({ ...prev, signin: false }));
           navigate(navStateData?.state?.redirect || '/');
-        })
-        .catch((err) => {
-          setError(err.message);
-          setLoading({...loading, signin: false});
-        });
-    }
-    else {
+        }, 300);
+      } catch (err) {
+        toast.error(err.message);
+        setError(err.message);
+        setLoading(prev => ({ ...prev, signin: false }));
+      }
+    } else if (action === 'signup') {
+      if (loading.signin || loading.signup) return;
+      
       // Validate first name for signup
       if (!firstName.trim()) {
         setError("Please enter your First Name to register.");
+        toast.warn("First Name is required for registration");
         return;
       }
 
       setLoading({...loading, signup: true});
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(async (userInfo) => {
-          // Create user document in Firestore on signup using compat syntax
-          await db.collection("users").doc(userInfo.user.uid).set({
-            email: userInfo.user.email,
-            firstName: firstName, // Save first name
-            role: "user", // Default role
-            created: new Date()
-          });
+      setError('');
 
-          dispatch({
-            type: Type.SET_USER,
-            user: { ...userInfo.user, role: "user", firstName } // Update state with name
-          });
-          setLoading({ ...loading, signup: false });
-          navigate(navStateData?.state?.redirect || '/');
-        })
-        .catch((err) => {
-          setError(err.message);
-          setLoading({...loading, signup: false});
+      try {
+        const userInfo = await auth.createUserWithEmailAndPassword(email, password);
+        
+        // Create user document in Firestore on signup
+        await db.collection("users").doc(userInfo.user.uid).set({
+          email: userInfo.user.email,
+          firstName: firstName,
+          role: "user",
+          created: new Date()
         });
+
+        toast.success("Account created successfully!");
+        setTimeout(() => {
+          setLoading(prev => ({ ...prev, signup: false }));
+          navigate(navStateData?.state?.redirect || '/');
+        }, 300);
+      } catch (err) {
+        toast.error(err.message);
+        setError(err.message);
+        setLoading(prev => ({ ...prev, signup: false }));
+      }
     }
-  }
+  };
 
   return (
     <section className={classes.login}>
@@ -97,7 +98,7 @@ function Auth() {
             </small>
           )
         }
-        <form >
+        <form onSubmit={(e) => authHandler(e, 'signin')}>
           {/* First Name field (Visible for registration) */}
           <div>
             <label htmlFor="firstName">First Name (Required for Registration)</label>
@@ -119,6 +120,7 @@ function Auth() {
               }} 
               type="email" 
               id='email' 
+              required
             />
           </div>
           
@@ -132,40 +134,39 @@ function Auth() {
               }} 
               type="password" 
               id="password" 
+              required
             />
           </div>
           
           <button 
-            type='submit'
-            name='signin'
+            type='submit' // Primary submit action
             className={classes.login_signInButton}
-         onClick={authHandler}
+            disabled={loading.signin || loading.signup}
           >
             {loading.signin ? (
               <ClipLoader color='#36d7b7' size={15} />
             ) : "Sign In"}
           </button>
+
+          {/* agreement */}
+          <p>
+            By signing-in you agree to the AMAZON FAKE CLONE Conditions of Use & Sale. 
+            Please see our Privacy Notice, our Cookies Notice and our Interest-Based Ads Notice.
+          </p>
+
+          {/* create account btn */}
+          <button 
+            type='button' // Secondary action: explicitly NOT submit to avoid form-action conflict
+            onClick={(e) => authHandler(e, 'signup')}
+            className={classes.login_registerButton}
+            disabled={loading.signin || loading.signup}
+          >
+            {loading.signup ? (
+              <ClipLoader color='#36d7b7' size={15} />
+            ) : "Create your Amazon Account"}
+          </button>
         </form>
 
-        {/* agreement */}
-        <p>
-          By signing-in you agree to the AMAZON FAKE CLONE Conditions of Use & Sale. 
-          Please see our Privacy Notice, our Cookies Notice and our Interest-Based Ads Notice.
-        </p>
-
-        {/* create account btn */}
-        <button 
-          type='submit'
-          name='signup' 
-          onClick={authHandler}
-          className={classes.login_registerButton}
-         
-        >
-          {loading.signup ? (
-            <ClipLoader color='#36d7b7' size={15} />
-          ) : "Create your Amazon Account"}
-        </button>
-        
         {error && (
           <small style={{padding: "5px", color: "red", display: "block", marginTop: "10px"}}>
             {error}
