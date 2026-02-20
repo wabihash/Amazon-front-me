@@ -12,6 +12,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import AdminRoute from "./Components/AdminRoute/AdminRoute";
 import AdminDashboard from "./Pages/Admin/AdminDashboard";
+import AICommandCenter from "./Pages/Admin/AICommandCenter";
 import Wishlist from "./Pages/Wishlist/Wishlist";
 import ComingSoon from "./Pages/ComingSoon/ComingSoon";
 
@@ -43,6 +44,11 @@ function Routing() {
                 <Route path="/admin" element={
                     <AdminRoute>
                         <AdminDashboard />
+                    </AdminRoute>
+                } />
+                <Route path="/admin/ai-center" element={
+                    <AdminRoute>
+                        <AICommandCenter />
                     </AdminRoute>
                 } />
                 <Route path="/wishlist" element={

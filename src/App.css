@@ -17,6 +17,9 @@ html,body{
   --text-color: #0f1111;
   --card-bg: #ffffff;
   --border-color: #ddd;
+  --header-bg: #131921;
+  --lower-header-bg: #232f3e;
+  --search-border: white;
 }
 
 .dark {
@@ -24,6 +27,9 @@ html,body{
   --text-color: #ffffff;
   --card-bg: #2b2b2b;
   --border-color: #444;
+  --header-bg: #232323; 
+  --lower-header-bg: #2d2d2d;
+  --search-border: #000;
 }
 
 body {
@@ -148,4 +154,15 @@ body {
 /* --- HR lines --- */
 .dark hr {
     border-color: var(--border-color);
+}
+
+/* --- Search bar in dark mode --- */
+.dark [class*="search"] select,
+.dark [class*="search"] input {
+    background-color: #333 !important;
+    color: white !important;
+    border-color: var(--search-border) !important;
+    outline: none !important;
+    appearance: none;
+    -webkit-appearance: none;
 }

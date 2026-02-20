@@ -2,6 +2,10 @@ import React from 'react';
 import LayOut from '../../Components/LayOut/LayOut';
 import { LineChart, PieChart, BarChart } from '@mui/x-charts';
 import './AdminDashboard.css';
+import AIAdmin from './AIAdmin';
+
+import { Link } from 'react-router-dom';
+import { FaRobot, FaChevronRight } from 'react-icons/fa';
 
 const AdminDashboard = () => {
     // Mock data for sales
@@ -30,17 +34,17 @@ const AdminDashboard = () => {
                         <div className="stat__value">$24,892.00</div>
                         <div className="stat__growth">↑ 12% from last week</div>
                     </div>
-                    <div className="stat__card" style={{borderColor: '#232f3e'}}>
+                    <div className="stat__card" style={{borderLeftColor: '#febd69'}}>
                         <h4>Total Orders</h4>
                         <div className="stat__value">1,240</div>
                         <div className="stat__growth">↑ 8% from last week</div>
                     </div>
-                    <div className="stat__card" style={{borderColor: '#2e7d32'}}>
+                    <div className="stat__card" style={{borderLeftColor: '#2e7d32'}}>
                         <h4>Active Users</h4>
                         <div className="stat__value">856</div>
                         <div className="stat__growth">↑ 15% from last week</div>
                     </div>
-                    <div className="stat__card" style={{borderColor: '#111'}}>
+                    <div className="stat__card" style={{borderLeftColor: '#ff9900'}}>
                         <h4>Total Products</h4>
                         <div className="stat__value">142</div>
                         <div className="stat__growth">Stable</div>
@@ -85,11 +89,25 @@ const AdminDashboard = () => {
                         <div style={{ width: '100%', height: 300 }}>
                             <BarChart
                                 xAxis={[{ scaleType: 'band', data: xLabels }]}
-                                series={[{ data: userData, label: 'New Users', color: '#232f3e' }]}
+                                series={[{ data: userData, label: 'New Users', color: '#febd69' }]}
                             />
                         </div>
                     </div>
                 </div>
+
+                {/* AI Assistant Navigation Card */}
+                <Link to="/admin/ai-center" className="admin__card ai_nav_card">
+                    <div className="ai_card_content">
+                        <div className="ai_icon_box">
+                            <FaRobot />
+                        </div>
+                        <div className="ai_text_box">
+                            <h3>AI Command Center</h3>
+                            <p>Manage your assistant's personality, bio, and site knowledge base.</p>
+                        </div>
+                        <FaChevronRight className="nav_arrow" />
+                    </div>
+                </Link>
             </div>
         </LayOut>
     );

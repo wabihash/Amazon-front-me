@@ -1,20 +1,20 @@
 
 /* First file content */
 .header_container {
-    background-color:#1a1a1a;
+    background-color: var(--header-bg);
     display: flex;
     gap: 10px;
     align-items: center;
     color: white;
     height: 70px;
-     
 }  
 .stickyWrapper {
   position: sticky;
   top: 0;
   z-index: 1000;
   width: 100%;
-  background-color:#1a1a1a;
+  background-color: var(--header-bg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .logo_container {
@@ -69,7 +69,8 @@
 .search input {
     padding: 10px 0px;
     font-weight: bold;
-    outline: 1px solid white;
+    border: 1px solid var(--search-border);
+    outline: none;
 }
 
 .search select {
@@ -79,10 +80,9 @@
 }
 
 .search input {
-    border: 1px solid white;
+    border: 1px solid var(--search-border);
     width: 100%;
     margin-right: -2px;
-  
 }
 
 .search svg {
@@ -125,10 +125,9 @@
     padding: 10px;
 }
 .language select{
-    background-color: #1a1a1a;
+    background-color: transparent;
     color: white;
     border: none;
-
 }
 .language img {
     width: 40%;
@@ -149,7 +148,7 @@
 
 }
 .lower__container {
-  background-color: #232f8e;
+  background-color: var(--lower-header-bg);
   color: white;
 }
 
