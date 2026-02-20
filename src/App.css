@@ -166,3 +166,18 @@ body {
     appearance: none;
     -webkit-appearance: none;
 }
+ 
+/* ===== TOASTIFY MOBILE FIX ===== */
+@media only screen and (max-width: 480px) {
+  .Toastify__toast-container {
+    width: 90% !important;
+    left: 5% !important;
+    bottom: 20px !important;
+    transform: none !important;
+  }
+  .Toastify__toast {
+    border-radius: 12px !important;
+    margin-bottom: 10px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  }
+}
