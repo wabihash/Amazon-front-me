@@ -178,13 +178,21 @@ const ChatBot = () => {
             .onSnapshot((doc) => {
                 if (doc.exists) {
                     const data = doc.data();
+                    console.log("ChatBot: Firebase Config Loaded SUCCESS.", {
+                        promptLength: data.systemPrompt?.length,
+                        name: data.assistantName
+                    });
                     setSiteKnowledge(data);
                     // Set initial greeting only if this is the first load
                     setMessages(prev => prev.length === 0 ? [{ 
                         role: 'assistant', 
                         content: (data.systemPrompt?.split('\n')[0] || "System Active")
                     }] : prev);
+                } else {
+                    console.warn("ChatBot: Firestore document 'main' NOT FOUND.");
                 }
+            }, (error) => {
+                console.error("ChatBot: Firebase snapshot ERROR:", error);
             });
         
         // One-time session greeting logic
@@ -338,7 +346,10 @@ const ChatBot = () => {
 
             utterance.onerror = (e) => {
                 clearTimeout(watchdog);
-                console.error("TTS Error:", e);
+                // Production: Only log real errors, ignore 'canceled' or 'interrupted' as they are part of natural flow
+                if (e.error !== 'canceled' && e.error !== 'interrupted') {
+                    console.error("TTS Error:", e.error || e);
+                }
                 isSpeakingRef.current = false;
                 setIsSpeaking(false);
                 isProcessingRef.current = false; // Unblock on error
@@ -361,15 +372,16 @@ const ChatBot = () => {
                 recognition.current.start();
                 
                 // Haptic Feedback for Mobile
-                if (navigator.vibrate) navigator.vibrate(50);
+                if (navigator.vibrate) try { navigator.vibrate(50); } catch(ev) {}
                 
                 setIsListening(true);
                 isListeningRef.current = true;
                 setInterimTranscript('');
                 console.log("Microphone Open.");
             } catch (err) {
+                // Ignore start errors if already running
                 if (err.name !== 'InvalidStateError') {
-                    console.error("Speech Recognition Start Error:", err);
+                    console.warn("Speech Recognition Start Error:", err.message);
                     isListeningRef.current = false;
                     setIsListening(false);
                 }

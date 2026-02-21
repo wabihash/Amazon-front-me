@@ -12,6 +12,30 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
+// Production Audit: Logs if keys are missing (without exposing value)
+if (import.meta.env.PROD) {
+  const missing = Object.entries(firebaseConfig)
+    .filter(([_, v]) => !v)
+    .map(([k]) => k);
+  if (missing.length > 0) {
+    console.warn("Firebase Config: Missing variables:", missing.join(", "));
+  } else {
+    console.log("Firebase Config: All keys present.");
+  }
+}
+
+// Production Audit: Logs if keys are missing (without exposing value)
+if (import.meta.env.PROD) {
+  const missing = Object.entries(firebaseConfig)
+    .filter(([_, v]) => !v)
+    .map(([k]) => k);
+  if (missing.length > 0) {
+    console.warn("Firebase Config: Missing variables:", missing.join(", "));
+  } else {
+    console.log("Firebase Config: All keys present.");
+  }
+}
+
 // Initialize firebase
 const app = firebase.initializeApp(firebaseConfig);
 const auth = app.auth();
