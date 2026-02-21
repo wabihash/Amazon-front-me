@@ -13,6 +13,11 @@
   transition: transform 0.2s ease;
 }
 
+.card a, .card a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
 .card:hover {
   transform: translateY(-4px);
 }
