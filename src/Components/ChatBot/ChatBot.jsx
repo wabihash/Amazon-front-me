@@ -262,14 +262,7 @@ const ChatBot = () => {
         if (!query.trim()) return;
         setMessages(prev => [...prev, { role: 'user', content: query }]);
         setIsTyping(true);
-        isProcessingRef.current = true; // Block loop restart 
-
-        // Interaction Window: For mobile browsers, we should start thinking immediately
-        // so the audio engine stays "warmed up" while we calculate.
-        if (isCallModeRef.current) {
-            const thinking = new SpeechSynthesisUtterance("");
-            window.speechSynthesis.speak(thinking);
-        }
+        isProcessingRef.current = true; // Block loop restart
 
         setTimeout(() => {
             const botResponse = generateResponse(query);
@@ -399,34 +392,19 @@ const ChatBot = () => {
             setIsListening(false);
             isListeningRef.current = false;
             
-            // Mobile "Unlock": Speaking an empty string on first click satisfies interaction policy
-            try {
-                const dummy = new SpeechSynthesisUtterance("");
-                window.speechSynthesis.speak(dummy);
-            } catch (e) {
-                console.warn("TTS Unlock failed:", e);
-            }
-
-            // VERCEL/MOBILE FIX: Start recognition IMMEDIATELY inside the click handler
-            // This satisfies the "User Activation" requirement for public domains.
-            if (recognition.current) {
-                try {
-                    recognition.current.start();
-                    setIsListening(true);
-                    isListeningRef.current = true;
-                    console.log("Microphone opened via direct interaction.");
-                } catch (err) {
-                    console.warn("Immediate mic start failed (expected if already running):", err.message);
-                }
-            }
+            // PRODUCTION FIX: Cancel any queued speech first, then speak greeting directly.
+            // Do NOT start mic here — speakText's onstart opens mic for barge-in,
+            // and onend opens mic for the user's turn. Starting mic + TTS at the
+            // same time causes TTS to fail on Vercel/production browsers.
+            window.speechSynthesis.cancel();
             
             // First time greeting - prioritized by system prompt intro, then fallback
             const promptIntro = siteKnowledge?.systemPrompt?.split(/(?:Q:|Question:|Q\.|Q\s*:)/i)[0]?.trim();
             const defaultIntro = "I am your professional virtual assistant. I am here to help you navigate our Amazon clone store and ensure you have a seamless shopping experience. How can I assist you today?";
             const intro = promptIntro || defaultIntro;
             
-            // Wait a tiny bit for the mic to warm up before speaking the intro
-            setTimeout(() => speakText(intro), 300);
+            // Small delay to let the browser register the user gesture for TTS
+            setTimeout(() => speakText(intro), 150);
         } else {
             console.log("Call Mode: Deactivating");
             setIsCallMode(false);
