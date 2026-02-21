@@ -449,3 +449,43 @@
         text-align: center;
     }
 }
+
+.interimTranscript {
+    margin-top: -10px;
+    margin-bottom: 20px;
+    font-style: italic;
+    opacity: 0.8;
+    max-width: 250px;
+    font-size: 14px;
+    animation: fadeIn 0.3s ease;
+}
+
+.speechDetected {
+    background: linear-gradient(135deg, #00c853 0%, #00e676 100%) !important;
+    box-shadow: 0 0 60px rgba(0, 200, 83, 0.4) !important;
+}
+
+.speechDetected::before, .speechDetected::after {
+    border-color: #00e676 !important;
+}
+
+.errorToast {
+    position: absolute;
+    top: 80px;
+    left: 20px;
+    right: 20px;
+    background: rgba(255, 77, 77, 0.95);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 13px;
+    text-align: center;
+    z-index: 3000;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
