@@ -78,7 +78,7 @@ const ChatBot = () => {
                     if (isCallModeRef.current && !isSpeakingRef.current && !isProcessingRef.current) {
                         if (silenceCountRef.current >= 3) {
                             silenceCountRef.current = 0;
-                            speakText(`I'm still here and listening! Did you have a question about ${siteKnowledge?.assistantName || 'the site'}?`);
+                            speakText("I'm still here! Do you have a question?");
                         } else {
                             startListening();
                         }
