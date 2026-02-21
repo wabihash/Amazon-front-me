@@ -371,3 +371,81 @@
 .endCallBtn:hover {
     transform: scale(1.05);
 }
+
+.greetingBubble {
+    position: absolute;
+    bottom: 0;
+    right: 75px;
+    background: #ff9900;
+    color: #131921;
+    padding: 12px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+    cursor: pointer;
+    animation: slideInRight 0.5s ease-out;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.greetingText p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.closeGreeting {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 20px;
+    height: 20px;
+    background: #232f3e;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.greetingArrow {
+    position: absolute;
+    right: -8px;
+    bottom: 20px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 8px solid #ff9900;
+}
+
+/* Responsive Greeting */
+@media (max-width: 480px) {
+    .greetingBubble {
+        right: 65px;
+        padding: 8px 15px;
+    }
+    .greetingText p {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 360px) {
+    .greetingBubble {
+        right: 60px;
+        padding: 6px 12px;
+        max-width: 150px;
+        white-space: normal;
+        text-align: center;
+    }
+}

@@ -18,6 +18,7 @@ const ChatBot = () => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [isTyping, setIsTyping] = useState(false);
+    const [showGreeting, setShowGreeting] = useState(false);
     const [siteKnowledge, setSiteKnowledge] = useState({
         assistantName: "Virtual Assistant",
         developerBio: "",
@@ -110,8 +111,31 @@ const ChatBot = () => {
                 }
             });
         
+        // One-time session greeting logic
+        const hasBeenGreeted = sessionStorage.getItem('chatbot_greeted');
+        if (!hasBeenGreeted) {
+            const timer = setTimeout(() => {
+                setShowGreeting(true);
+            }, 3500); // 3-second delay for a natural feel
+            return () => {
+                unsubscribe();
+                clearTimeout(timer);
+            };
+        }
+        
         return () => unsubscribe();
     }, []);
+
+    const handleCloseGreeting = (e) => {
+        if (e) e.stopPropagation();
+        setShowGreeting(false);
+        sessionStorage.setItem('chatbot_greeted', 'true');
+    };
+
+    const handleOpenChatFromGreeting = () => {
+        setIsOpen(true);
+        handleCloseGreeting();
+    };
 
     // Automated Watchdog: Restarts the listener if the system gets stuck idle
     useEffect(() => {
@@ -331,6 +355,18 @@ const ChatBot = () => {
             >
                 {isOpen ? <FaTimes /> : <FaRobot />}
             </button>
+
+            {showGreeting && !isOpen && (
+                <div className={classes.greetingBubble} onClick={handleOpenChatFromGreeting}>
+                    <button className={classes.closeGreeting} onClick={handleCloseGreeting}>
+                        <FaTimes />
+                    </button>
+                    <div className={classes.greetingText}>
+                        <p>Hey! Do you need help?</p>
+                    </div>
+                    <div className={classes.greetingArrow}></div>
+                </div>
+            )}
 
             {isOpen && (
                 <div className={classes.chatWindow}>
