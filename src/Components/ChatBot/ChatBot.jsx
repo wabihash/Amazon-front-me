@@ -87,6 +87,15 @@ const ChatBot = () => {
             };
         }
         
+        // Warm up voices for mobile
+        if ('speechSynthesis' in window) {
+            const loadVoices = () => {
+                window.speechSynthesis.getVoices();
+            };
+            window.speechSynthesis.onvoiceschanged = loadVoices;
+            loadVoices();
+        }
+        
         return () => {
             if (recognition.current) {
                 recognition.current.onend = null; // Prevent loop on unmount
@@ -180,19 +189,24 @@ const ChatBot = () => {
         setIsTyping(true);
         isProcessingRef.current = true; // Block loop restart 
 
+        // Interaction Window: For mobile browsers, we should start thinking immediately
+        // so the audio engine stays "warmed up" while we calculate.
+        if (isCallModeRef.current) {
+            const thinking = new SpeechSynthesisUtterance("");
+            window.speechSynthesis.speak(thinking);
+        }
+
         setTimeout(() => {
             const botResponse = generateResponse(query);
             setMessages(prev => [...prev, { role: 'assistant', content: botResponse }]);
             setIsTyping(false);
             
             if (isCallModeRef.current) {
-                // Set processing false ONLY if we don't have something to speak
-                if (!botResponse) isProcessingRef.current = false;
                 speakText(botResponse);
             } else {
                 isProcessingRef.current = false;
             }
-        }, 1200);
+        }, 800); // Reduced delay for better mobile responsiveness
     }
 
     const speakText = (text) => {
@@ -276,9 +290,13 @@ const ChatBot = () => {
             setIsListening(false);
             isListeningRef.current = false;
             
+            // Mobile "Unlock": Speaking an empty string on first click satisfies interaction policy
+            const dummy = new SpeechSynthesisUtterance("");
+            window.speechSynthesis.speak(dummy);
+            
             // First time greeting - purely data driven
             const intro = (siteKnowledge?.systemPrompt?.split(/Q:/i)[0] || "i am your professional virtual assistant. how can i assist you today?");
-            speakText(intro);
+            setTimeout(() => speakText(intro), 100);
         } else {
             setIsCallMode(false);
             isCallModeRef.current = false;
