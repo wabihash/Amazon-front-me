@@ -343,7 +343,7 @@ const ChatBot = () => {
             return persona;
         }
         
-        return persona;
+        return "I am still learning, could you please be more specific to my website? I can answer questions about shipping, returns, security, and more!";
     };
 
     return (
