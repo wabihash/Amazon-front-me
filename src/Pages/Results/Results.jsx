@@ -21,7 +21,6 @@ function Results() {
                 setAllProducts(res.data)
             })
             .catch((err) => {
-                console.log('Error fetching all products:', err)
             })
     }, [])
 
@@ -49,7 +48,6 @@ function Results() {
                     setLoading(false)
                 })
                 .catch((err) => {
-                    console.log(err)
                     setLoading(false)
                 })
         } else if (categoryName) {
@@ -60,7 +58,6 @@ function Results() {
                     setLoading(false)
                 })
                 .catch((err) => {
-                    console.log(err)
                     setLoading(false)
                 })
         }
@@ -122,3 +119,4 @@ function Results() {
 }
 
 export default Results
+

@@ -25,7 +25,6 @@ function Payment() {
   const [cardError, setCardError] = useState(null);
   const [processing, setProcessing] = useState(false);
   const handleChange = (event) => {
-    console.log(event)
   event?.error?.message ? setCardError(event?.error?.message) : setCardError("");
   };
   const handlePayment =  async(event) => {
@@ -37,7 +36,6 @@ function Payment() {
         method: "post",
         url: `/payment/create?total=${total * 100}`
      })
-      console.log(response.data);
       const clientSecret = response.data?.clientSecret;
       // client side conformation(react-side)
       const paymentIntent = await stripe.confirmCardPayment(
@@ -48,7 +46,6 @@ function Payment() {
         }
       }
       )
-      console.log(paymentIntent);
       await db
   .collection("users")
   .doc(user.uid)

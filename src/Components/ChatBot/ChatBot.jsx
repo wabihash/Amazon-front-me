@@ -76,13 +76,11 @@ const ChatBot = () => {
                         if (cleanFinal.length > 5) {
                             const isEcho = lastSpokenRef.current?.toLowerCase().includes(cleanFinal);
                             if (isEcho) {
-                                console.log("Barge-in: Echo detected, ignoring.");
                                 setIsSpeechDetected(false);
                                 setInterimTranscript('');
                                 return;
                             }
                             
-                            console.log("Barge-in: Valid interruption detected.");
                             window.speechSynthesis.cancel();
                             isSpeakingRef.current = false;
                             setIsSpeaking(false);
@@ -178,10 +176,6 @@ const ChatBot = () => {
             .onSnapshot((doc) => {
                 if (doc.exists) {
                     const data = doc.data();
-                    console.log("ChatBot: Firebase Config Loaded SUCCESS.", {
-                        promptLength: data.systemPrompt?.length,
-                        name: data.assistantName
-                    });
                     setSiteKnowledge(data);
                     // Set initial greeting only if this is the first load
                     setMessages(prev => prev.length === 0 ? [{ 
@@ -189,7 +183,7 @@ const ChatBot = () => {
                         content: (data.systemPrompt?.split('\n')[0] || "System Active")
                     }] : prev);
                 } else {
-                    console.warn("ChatBot: Firestore document 'main' NOT FOUND.");
+
                 }
             }, (error) => {
                 console.error("ChatBot: Firebase snapshot ERROR:", error);
@@ -228,7 +222,6 @@ const ChatBot = () => {
             interval = setInterval(() => {
                 // If call mode is active but NOTHING is happening, restart listener
                 if (!isSpeakingRef.current && !isTyping && !isListeningRef.current && !isProcessingRef.current) {
-                    console.log("Watchdog: Auto-restarting idle listener...");
                     startListening();
                 }
             }, 3000); // Check every 3 seconds
@@ -370,7 +363,7 @@ const ChatBot = () => {
                 setIsListening(true);
                 isListeningRef.current = true;
                 setInterimTranscript('');
-                console.log("Microphone Open.");
+
             } catch (err) {
                 // Ignore start errors if already running
                 if (err.name !== 'InvalidStateError') {
@@ -384,7 +377,7 @@ const ChatBot = () => {
 
     const toggleCallMode = () => {
         if (!isCallMode) {
-            console.log("Call Mode: Activating (User Interaction)");
+
             setIsCallMode(true);
             isCallModeRef.current = true;
             isSpeakingRef.current = false;
@@ -406,7 +399,7 @@ const ChatBot = () => {
             // Small delay to let the browser register the user gesture for TTS
             setTimeout(() => speakText(intro), 150);
         } else {
-            console.log("Call Mode: Deactivating");
+
             setIsCallMode(false);
             isCallModeRef.current = false;
             setIsSpeaking(false);

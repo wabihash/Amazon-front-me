@@ -20,7 +20,6 @@ if (import.meta.env.PROD) {
   if (missing.length > 0) {
     console.warn("Firebase Config: Missing variables:", missing.join(", "));
   } else {
-    console.log("Firebase Config: All keys present.");
   }
 }
 
@@ -32,7 +31,6 @@ if (import.meta.env.PROD) {
   if (missing.length > 0) {
     console.warn("Firebase Config: Missing variables:", missing.join(", "));
   } else {
-    console.log("Firebase Config: All keys present.");
   }
 }
 

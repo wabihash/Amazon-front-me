@@ -25,7 +25,6 @@ function ProductDetail({ renderAdd = true }) { // <-- added renderAdd prop
                 setLoading(false);
             })
             .catch((err) => {
-                console.log(err);
                 setLoading(false);
             });
     }, [productId]);
@@ -86,3 +85,4 @@ function ProductDetail({ renderAdd = true }) { // <-- added renderAdd prop
 }
 
 export default ProductDetail;
+

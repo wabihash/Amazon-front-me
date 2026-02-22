@@ -7,7 +7,6 @@ function Category() {
   return (
     <section className={classes.categories}>
       {categories.map((cat) => (
-        console.log(cat),
         <div key={cat.id} className={classes.card}>
          <Link to={`/category/${cat.value}`}>
  {/* ✅ Capital L */}
