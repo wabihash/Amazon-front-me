@@ -2,7 +2,6 @@ import React from 'react';
 import LayOut from '../../Components/LayOut/LayOut';
 import { LineChart, PieChart, BarChart } from '@mui/x-charts';
 import './AdminDashboard.css';
-import AIAdmin from './AIAdmin';
 
 import { Link } from 'react-router-dom';
 import { FaRobot, FaChevronRight } from 'react-icons/fa';
