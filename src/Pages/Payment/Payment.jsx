@@ -1,4 +1,4 @@
-import React, { useContext,useState } from 'react'
+import React, { useContext, useState } from 'react'
 import classes from './Payment.module.css'
 import LayOut from '../../Components/LayOut/LayOut'
 import { DataContext } from '../../Components/DataProvider/DataProvider'
@@ -7,12 +7,15 @@ import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import CurrencyFormat from '../../Components/Product/CurrencyFormat'
 import instance from '../../API/Axios'
 import { ClipLoader } from 'react-spinners';
-import {db} from '../../Utility/Firebase.jsx'
+import { db } from '../../Utility/Firebase.jsx'
 import { Type } from '../../Utility/ActionType.jsx'
+import { useNavigate } from 'react-router-dom';
+
 function Payment() {
-  const [{ basket, user },dispatch] = useContext(DataContext)
+  const [{ basket, user }, dispatch] = useContext(DataContext)
   const stripe = useStripe();
   const elements = useElements();
+  const navigate = useNavigate();
 
   const total = basket.reduce(
     (amount, item) => item.price * item.quantity + amount,
@@ -24,6 +27,7 @@ function Payment() {
   );
   const [cardError, setCardError] = useState(null);
   const [processing, setProcessing] = useState(false);
+  const [success, setSuccess] = useState(false);
   const handleChange = (event) => {
   event?.error?.message ? setCardError(event?.error?.message) : setCardError("");
   };
@@ -58,8 +62,12 @@ function Payment() {
   });
       // empty the basket after payment
       dispatch({ type: Type.EMPTY_BASKET });
-
+      setSuccess(true);
       setProcessing(false);
+      // redirect to orders page after success
+      setTimeout(() => {
+        navigate("/orders", { replace: true });
+      }, 2000);
     }
     catch (error) {
        setProcessing(false);
@@ -99,7 +107,15 @@ function Payment() {
                   {/* Error */}
                   {
                     cardError && (
-                      <small style={{color:"red"}}>{cardError}</small>
+                      <small style={{ color: "red" }}>{cardError}</small>
+                    )
+                  }
+                  {/* Success message */}
+                  {
+                    success && (
+                      <div className={classes.success_msg}>
+                        Payment Completed Successfully! Redirecting to your orders...
+                      </div>
                     )
                   }
                   {/* card element */}
@@ -110,20 +126,20 @@ function Payment() {
                  Total order | <CurrencyFormat amount={total} />
                     </span>
                  </div>
-                  <button>
-                    
+                  <button disabled={processing || success}>
                     {
-                      processing?(
+                      processing ? (
                         <div className={classes.loading}>
-                          <ClipLoader size={15} color={"#fff"} 
-                          />
+                          <ClipLoader size={15} color={"#fff"} />
                           <p>please wait...</p>
-                      </div>
-                      ):"Pay Now "
-
+                        </div>
+                      ) : success ? (
+                        "Payment Success"
+                      ) : (
+                        "Pay Now"
+                      )
                     }
-                    
-                    </button>
+                  </button>
                 </form>
               </div>
             </div>

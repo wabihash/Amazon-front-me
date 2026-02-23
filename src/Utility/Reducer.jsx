@@ -5,7 +5,7 @@ export const initialState = {
   user: null,
   authLoading: true,
   wishlist: [],
-  theme: 'light'
+  theme: localStorage.getItem('theme') || 'light'
 };
 
 export const reducer = (state, action) => {
@@ -84,11 +84,14 @@ export const reducer = (state, action) => {
         wishlist: state.wishlist.filter(item => item.id === action.id)
       };
     
-    case Type.TOGGLE_THEME:
+    case Type.TOGGLE_THEME: {
+      const newTheme = state.theme === 'light' ? 'dark' : 'light';
+      localStorage.setItem('theme', newTheme);
       return {
         ...state,
-        theme: state.theme === 'light' ? 'dark' : 'light'
+        theme: newTheme
       };
+    }
     
     default:
       return state;
