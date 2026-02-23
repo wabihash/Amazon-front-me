@@ -16,9 +16,10 @@ import AICommandCenter from "./Pages/Admin/AICommandCenter";
 import Wishlist from "./Pages/Wishlist/Wishlist";
 import ComingSoon from "./Pages/ComingSoon/ComingSoon";
 
+// Initialized once at module level — never recreated on re-render
+const stripePromise = loadStripe("pk_test_51SjZSHHqUsHBM45rMWJNPOfwgTo7DnlEeOhNGsDlB7cioouB1jo6sqwJPcptPjpz2fUOXQf9d5Od1DDQsaD6QMbz00lsennkHX");
 
 function Routing() {
-    const stripePromise = loadStripe("pk_test_51SjZSHHqUsHBM45rMWJNPOfwgTo7DnlEeOhNGsDlB7cioouB1jo6sqwJPcptPjpz2fUOXQf9d5Od1DDQsaD6QMbz00lsennkHX");
     return (
         <Router>  
             <Routes>
