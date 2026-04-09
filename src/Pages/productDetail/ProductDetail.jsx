@@ -15,7 +15,7 @@ function ProductDetail({ renderAdd = true }) { // <-- added renderAdd prop
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const [state, dispatch] = useContext(DataContext);
+    const [, dispatch] = useContext(DataContext);
 
     useEffect(() => {
         setLoading(true);
@@ -24,7 +24,7 @@ function ProductDetail({ renderAdd = true }) { // <-- added renderAdd prop
                 setProduct(res.data);
                 setLoading(false);
             })
-            .catch((err) => {
+            .catch(() => {
                 setLoading(false);
             });
     }, [productId]);

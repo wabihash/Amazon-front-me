@@ -101,7 +101,7 @@ const ChatBot = () => {
                     handleVoiceInput(finalTranscript);
                     
                     // On mobile, we often need to manual-stop continuous to process
-                    try { recognition.current.stop(); } catch(e) {}
+                    try { recognition.current.stop(); } catch {}
                 }
             };
 
@@ -164,7 +164,7 @@ const ChatBot = () => {
         return () => {
             if (recognition.current) {
                 recognition.current.onend = null; // Prevent loop on unmount
-                try { recognition.current.abort(); } catch(e) {}
+                try { recognition.current.abort(); } catch {}
             }
             window.speechSynthesis.cancel();
         }
@@ -182,8 +182,6 @@ const ChatBot = () => {
                         role: 'assistant', 
                         content: (data.systemPrompt?.split('\n')[0] || "System Active")
                     }] : prev);
-                } else {
-
                 }
             }, (error) => {
                 console.error("ChatBot: Firebase snapshot ERROR:", error);
@@ -246,12 +244,12 @@ const ChatBot = () => {
         setInput('');
     };
 
-    const handleVoiceInput = (transcript) => {
+    function handleVoiceInput(transcript) {
         silenceCountRef.current = 0; // Reset silence counter on success
         processQuery(transcript);
-    };
+    }
 
-    const processQuery = (query) => {
+    function processQuery(query) {
         if (!query.trim()) return;
         setMessages(prev => [...prev, { role: 'user', content: query }]);
         setIsTyping(true);
@@ -277,7 +275,7 @@ const ChatBot = () => {
         }, 3000);
     }
 
-    const speakText = (text) => {
+    function speakText(text) {
         if (!text) {
             isProcessingRef.current = false;
             return;
@@ -344,9 +342,9 @@ const ChatBot = () => {
 
             window.speechSynthesis.speak(utterance);
         }
-    };
+    }
 
-    const startListening = () => {
+    function startListening() {
         // Guard: Don't start listening if thinking or already listening
         // Note: We ALLOW listening while speaking for Barge-in!
         if (!isCallModeRef.current || isListeningRef.current || isProcessingRef.current) {
@@ -358,7 +356,7 @@ const ChatBot = () => {
                 recognition.current.start();
                 
                 // Haptic Feedback for Mobile
-                if (navigator.vibrate) try { navigator.vibrate(50); } catch(ev) {}
+                if (navigator.vibrate) try { navigator.vibrate(50); } catch {}
                 
                 setIsListening(true);
                 isListeningRef.current = true;
@@ -373,7 +371,7 @@ const ChatBot = () => {
                 }
             }
         }
-    };
+    }
 
     const toggleCallMode = () => {
         if (!isCallMode) {
@@ -409,7 +407,7 @@ const ChatBot = () => {
             isListeningRef.current = false;
             window.speechSynthesis.cancel();
             if (recognition.current) {
-                try { recognition.current.abort(); } catch(e) {}
+                try { recognition.current.abort(); } catch {}
             }
         }
     };

@@ -1,9 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import classes from './Auth.module.css';
 import { Link,useNavigate,useLocation} from 'react-router-dom';
 import { auth, db } from '../../Utility/Firebase';
-import { DataContext } from "../../Components/DataProvider/DataProvider";
-import { Type } from "../../Utility/ActionType";
 // Removed modular imports to use compat API consistently
 import { ClipLoader } from "react-spinners";
 import { toast } from 'react-toastify';
@@ -17,7 +15,6 @@ function Auth() {
     signin: false,
     signup: false,
   });
-  const [{ user }, dispatch] = useContext(DataContext);
   const navigate = useNavigate()
   const navStateData = useLocation();
   const authHandler = async (e, actionType) => {

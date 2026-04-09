@@ -20,7 +20,7 @@ function Results() {
             .then((res) => {
                 setAllProducts(res.data)
             })
-            .catch((err) => {
+            .catch(() => {
             })
     }, [])
 
@@ -47,7 +47,7 @@ function Results() {
                     setResults(filteredProducts)
                     setLoading(false)
                 })
-                .catch((err) => {
+                .catch(() => {
                     setLoading(false)
                 })
         } else if (categoryName) {
@@ -57,7 +57,7 @@ function Results() {
                     setResults(res.data)
                     setLoading(false)
                 })
-                .catch((err) => {
+                .catch(() => {
                     setLoading(false)
                 })
         }

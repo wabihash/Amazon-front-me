@@ -7,7 +7,7 @@ import classes from './Cart.module.css';
 import ProductCard from '../../Components/Product/ProductCard';
 
 function Cart() {
-    const [{ basket, user }, dispatch] = useContext(DataContext);
+    const [{ basket, user }] = useContext(DataContext);
     const total = basket.reduce(
         (amount, item) => item.price * item.quantity + amount,
         0

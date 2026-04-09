@@ -15,22 +15,10 @@ const firebaseConfig = {
 // Production Audit: Logs if keys are missing (without exposing value)
 if (import.meta.env.PROD) {
   const missing = Object.entries(firebaseConfig)
-    .filter(([_, v]) => !v)
+    .filter(([, v]) => !v)
     .map(([k]) => k);
   if (missing.length > 0) {
     console.warn("Firebase Config: Missing variables:", missing.join(", "));
-  } else {
-  }
-}
-
-// Production Audit: Logs if keys are missing (without exposing value)
-if (import.meta.env.PROD) {
-  const missing = Object.entries(firebaseConfig)
-    .filter(([_, v]) => !v)
-    .map(([k]) => k);
-  if (missing.length > 0) {
-    console.warn("Firebase Config: Missing variables:", missing.join(", "));
-  } else {
   }
 }
 

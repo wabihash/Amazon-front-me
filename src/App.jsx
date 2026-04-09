@@ -8,7 +8,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
- const [{user, theme},dispatch] = useContext(DataContext);
+ const [{ theme }, dispatch] = useContext(DataContext);
   useEffect(() => {
     dispatch({
       type: Type.SET_AUTH_LOADING,
@@ -80,7 +80,7 @@ function App() {
         status: false
       });
     });
-  }, []);
+  }, [dispatch]);
   
   return (
     <div className={theme}>

@@ -4,13 +4,13 @@ import { DataContext } from '../../Components/DataProvider/DataProvider'
 
 const ProtectedRoute = ({ children, msg, redirect }) => {
     const navigate = useNavigate();
-    const [{user, authLoading},dispatch] = useContext(DataContext);
+  const [{user, authLoading}] = useContext(DataContext);
   
   useEffect(() => {
     if (!authLoading && !user) {
       navigate("/auth", { state: { msg, redirect } });
     }
-  }, [user, authLoading]);
+  }, [authLoading, msg, navigate, redirect, user]);
 
   if (authLoading) {
     return null; // Or a loader component

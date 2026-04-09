@@ -69,7 +69,7 @@ function Payment() {
         navigate("/orders", { replace: true });
       }, 2000);
     }
-    catch (error) {
+     catch {
        setProcessing(false);
     }
   }
